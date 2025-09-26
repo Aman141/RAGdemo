@@ -38,7 +38,7 @@ def create_chunks(pdf_reader, chunk_size=600):
 
         for chunk_index, chunk in enumerate(page_chunks):
                 chunks.append({
-                    "file_name": pdf_reader.metadata["title"],
+                    "file_name": pdf_reader.metadata["/Title"],
                     "page_index": page_index,
                     "chunk_index": chunk_index,
                     "text": chunk
@@ -63,6 +63,6 @@ def run_ingestion(pdf_path, output_path):
 
 
 if __name__ == "__main__":
-    pdf_path = "data/raw/meditations.pdf"
-    output_path = "data/processed/meditations.json"
+    pdf_path = "data/raw/meidtations.pdf"
+    output_path = "data/processed/meidtations.json"
     run_ingestion(pdf_path, output_path)

@@ -2,6 +2,9 @@ from typing import List, Dict
 import faiss
 import numpy as np
 from pathlib import Path
+import json
+from embedder import load_embedding_model, embed_chunks
+
 
 def build_index(embedded_chunks: List[Dict], index_path: Path):
     """
@@ -26,3 +29,21 @@ def build_index(embedded_chunks: List[Dict], index_path: Path):
 
 
 
+if __name__=="__main__":
+    # load the processed chucks
+    print("Loading processed chunks...")
+    processed_chucks_path = Path('data/processed/meidtations.json')
+    with open(processed_chucks_path, 'r') as f:
+        processed_chucks = json.load(f)
+    print(f"✅ Processed chunks loaded from {processed_chucks_path}")
+
+    # load embedding model
+    model = load_embedding_model(model_name="text-embedding-3-small")
+    print("✅ Embedding model loaded")
+
+    # create embeddings
+    embedded_chucks = embed_chunks(chunks=processed_chucks, model=model)
+
+    # build index
+    index_path = 'data/vector_store/meidtations.faiss'
+    build_index(embedded_chunks=embedded_chucks, index_path=index_path)
